@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="브랜드별 디자인 시스템 갤러리 — 컬러 톤, 산업, 비주얼 스타일로 필터링.">
+<title>Design Systems Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;600&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --bg-elev: #ffffff;
+    --bg-soft: #efece4;
+    --ink: #14110d;
+    --ink-soft: #4a463e;
+    --ink-mute: #8a857a;
+    --line: #1d1a14;
+    --line-soft: #d8d3c5;
+    --accent: #ff5722;
+    --accent-soft: #ffe9dc;
+    --radius: 4px;
+    --serif: "Fraunces", ui-serif, Georgia, serif;
+    --sans: "Pretendard", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 16px; background: var(--ink); color: var(--bg); padding: 8px 12px; z-index: 100; }
+
+  .site-header { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
+  .header-inner { max-width: 1440px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { font-family: var(--serif); font-weight: 500; font-size: 22px; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); font-style: italic; }
+  .brand sup { font-family: var(--mono); font-size: 9px; font-style: normal; font-weight: 500; color: var(--accent); letter-spacing: 0.1em; margin-left: 6px; vertical-align: super; }
+  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-meta strong { color: var(--ink); font-weight: 500; }
+  .live-dot { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 6px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .layout { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: calc(100vh - 60px); }
+
+  .sidebar { border-right: 1px solid var(--line); padding: 28px 28px 60px; position: sticky; top: 61px; align-self: start; height: calc(100vh - 61px); overflow-y: auto; background: var(--bg); }
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 3px; }
+  .sidebar-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+  .sidebar-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
+  .reset-btn { background: none; border: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .reset-btn:hover { color: var(--accent); }
+
+  .filter-group { margin-bottom: 22px; }
+  .filter-group h3 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: var(--ink-soft); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .filter-group h3::before { content: ''; width: 6px; height: 6px; background: var(--ink); display: inline-block; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-family: var(--sans); font-size: 12px; padding: 5px 10px; border: 1px solid var(--line-soft); background: var(--bg-elev); color: var(--ink-soft); border-radius: 999px; cursor: pointer; transition: all 0.15s ease; user-select: none; }
+  .chip:hover { border-color: var(--ink); color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .range-row { display: flex; align-items: center; gap: 8px; }
+  .range-row input[type="number"] { width: 100%; font-family: var(--mono); font-size: 12px; padding: 7px 9px; border: 1px solid var(--line-soft); background: var(--bg-elev); color: var(--ink); border-radius: var(--radius); outline: none; }
+  .range-row input[type="number"]:focus { border-color: var(--ink); }
+  .range-row span { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); }
+
+  .main { padding: 32px 32px 80px; }
+  .toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+  .search-wrap { flex: 1; min-width: 260px; position: relative; }
+  .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-mute); pointer-events: none; }
+  .search { width: 100%; padding: 12px 14px 12px 40px; border: 1px solid var(--line); background: var(--bg-elev); font-family: var(--sans); font-size: 14px; color: var(--ink); outline: none; border-radius: var(--radius); }
+  .search::placeholder { color: var(--ink-mute); }
+  .search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .sort-wrap { display: flex; align-items: center; gap: 10px; }
+  .sort-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+  .sort { padding: 11px 36px 11px 14px; border: 1px solid var(--line); background: var(--bg-elev); font-family: var(--sans); font-size: 13px; color: var(--ink); cursor: pointer; appearance: none; border-radius: var(--radius); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2314110d' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+
+  .results-bar { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; gap: 12px; }
+  .results-count { font-family: var(--serif); font-style: italic; font-size: 28px; font-weight: 400; letter-spacing: -0.02em; }
+  .results-count em { font-style: normal; color: var(--accent); font-weight: 500; }
+  .active-filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .active-filter { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 4px 8px 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; }
+  .active-filter button { background: none; border: none; color: var(--bg); cursor: pointer; padding: 0; font-size: 14px; line-height: 1; opacity: 0.7; }
+  .active-filter button:hover { opacity: 1; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+  .card { background: var(--bg-elev); cursor: pointer; transition: transform 0.2s ease; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .card:hover { z-index: 2; }
+  .card:hover .card-swatch { transform: scale(1.02); }
+  .card-swatch { aspect-ratio: 16/10; display: grid; grid-template-columns: repeat(4, 1fr); transition: transform 0.4s ease; position: relative; }
+  .card-swatch span { display: block; height: 100%; }
+  .card-swatch::after { content: attr(data-style); position: absolute; bottom: 8px; right: 10px; font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.95); text-shadow: 0 1px 2px rgba(0,0,0,0.3); background: rgba(0,0,0,0.4); padding: 3px 7px; border-radius: 2px; backdrop-filter: blur(4px); }
+  .card-body { padding: 16px 18px 18px; border-top: 1px solid var(--line-soft); flex: 1; display: flex; flex-direction: column; }
+  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .card-name { font-family: var(--serif); font-size: 19px; font-weight: 500; letter-spacing: -0.015em; color: var(--ink); line-height: 1.2; }
+  .card-year { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); flex-shrink: 0; }
+  .card-meta { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.4; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+  .card-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); background: var(--bg-soft); padding: 3px 7px; border-radius: 2px; }
+  .card-tag.accent { color: var(--accent); background: var(--accent-soft); }
+
+  .empty, .error-state { text-align: center; padding: 60px 20px; }
+  .empty h2, .error-state h2 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 28px; color: var(--ink); margin: 0 0 12px; letter-spacing: -0.02em; }
+  .empty p, .error-state p { margin: 0 0 20px; font-size: 14px; max-width: 500px; margin-left: auto; margin-right: auto; color: var(--ink-soft); }
+  .empty-action { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); border: none; padding: 12px 20px; cursor: pointer; border-radius: var(--radius); }
+  .error-state { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); }
+  .error-detail { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); background: var(--bg-elev); padding: 12px 16px; border-radius: var(--radius); margin-top: 16px; text-align: left; word-break: break-all; }
+
+  .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; gap: 16px; }
+  .spinner { width: 28px; height: 28px; border: 2px solid var(--line-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+
+  .mobile-toggle { display: none; border: 1px solid var(--line); background: var(--bg-elev); padding: 10px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); align-items: center; gap: 6px; }
+
+  @media (max-width: 900px) {
+    .header-inner { padding: 14px 18px; }
+    .header-meta { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: fixed; top: 0; left: 0; width: 88%; max-width: 340px; height: 100vh; z-index: 100; transform: translateX(-100%); transition: transform 0.25s ease; padding-top: 60px; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+    .sidebar-overlay.show { display: block; }
+    .main { padding: 18px; }
+    .mobile-toggle { display: inline-flex; }
+    .results-count { font-size: 22px; }
+    .toolbar { gap: 10px; }
+    .search-wrap { min-width: 100%; order: 2; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#/">Design Systems<sup>GALLERY</sup></a>
+    <div class="header-meta" id="headerMeta">
+      <span class="live-dot"></span>LIVE · <strong id="totalCount">—</strong> Systems
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="필터 열기">⚙ 필터</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="sidebar-title">Filters</span>
+      <button class="reset-btn" id="resetBtn">필터 초기화</button>
+    </div>
+    <div id="filters"></div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="search" id="search" type="search" placeholder="브랜드명으로 검색…" aria-label="검색">
+      </div>
+      <div class="sort-wrap">
+        <span class="sort-label">Sort</span>
+        <select class="sort" id="sort" aria-label="정렬">
+          <option value="name-asc">브랜드명 (가나다)</option>
+          <option value="year-desc">출시 연도 ↓</option>
+          <option value="year-asc">출시 연도 ↑</option>
+          <option value="rev-desc">최근 리비전 ↓</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="results-bar">
+      <div class="results-count">
+        <em id="visibleCount">—</em> <span style="color:var(--ink-mute); font-size:14px; font-family:var(--mono); letter-spacing:0.08em; text-transform:uppercase;">results</span>
+      </div>
+      <div class="active-filters" id="activeFilters"></div>
+    </div>
+
+    <div id="results">
+      <div class="loading"><div class="spinner"></div><span>구글 시트에서 데이터 로딩 중…</span></div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   ★★★ 설정: 여기에 본인의 Google Sheets CSV URL 을 입력하세요 ★★★
+
+   사용 방법:
+   1. Google Sheets 에서 [파일] → [공유] → [웹에 게시] 클릭
+   2. "전체 문서" → "쉼표로 구분된 값(.csv)" 선택
+   3. [게시] 버튼 클릭 → 생성된 URL 복사
+   4. 아래 SHEET_CSV_URL 변수에 붙여넣기
+
+   예시:
+   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vXXXX.../pub?output=csv";
+   ============================================================ */
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7zU3F1beW0gD5nybKdoxUfN4cgbAP-yFmJNWY2m8Gwm36_Jpcs9K_qbNb_uZ-uCEAZQA5K8UAkv3M/pub?output=csv";
+
+/* 시트 연결 전 데모 모드: 위 URL이 기본값이면 샘플 데이터 사용 */
+const FALLBACK_DATA = [
+  { name:"Material Design", year:2014, revision:2024, region:"Global", industry:"Tech", tone:"Bright", style:"Geometric", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Subtle Depth", theme:"Both", official:true, colors:["#1976d2","#42a5f5","#ffc107","#f50057"] },
+  { name:"Apple HIG", year:2013, revision:2024, region:"Global", industry:"Tech", tone:"Neutral", style:"Refined", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#007aff","#34c759","#ff3b30","#000000"] },
+  { name:"Toss DS", year:2020, revision:2024, region:"Asia", industry:"Finance", tone:"Cool", style:"Refined", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#3182f6","#191f28","#f2f4f6","#ff5b5b"] },
+  { name:"Naver Design", year:2018, revision:2023, region:"Asia", industry:"Tech", tone:"Bright", style:"Geometric", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#03c75a","#000000","#f7f7f7","#ff7700"] }
+];
+
+const SCHEMA = [
+  { key:"region",   label:"지역",        type:"chips" },
+  { key:"industry", label:"산업",        type:"chips" },
+  { key:"tone",     label:"컬러 톤",     type:"chips" },
+  { key:"style",    label:"비주얼 스타일", type:"chips" },
+  { key:"font",     label:"폰트 카테고리", type:"chips" },
+  { key:"korean",   label:"한글 지원",    type:"chips", values:[{v:true,label:"지원"},{v:false,label:"미지원"}] },
+  { key:"density",  label:"밀도",        type:"chips" },
+  { key:"corners",  label:"모서리 성향",   type:"chips" },
+  { key:"flatness", label:"평면성",      type:"chips" },
+  { key:"theme",    label:"테마 모드",    type:"chips" },
+  { key:"official", label:"공식 디자인 시스템", type:"chips", values:[{v:true,label:"공식"},{v:false,label:"비공식"}] },
+  { key:"year",     label:"출시 연도",    type:"range" },
+  { key:"revision", label:"최근 리비전",   type:"range" }
+];
+
+let DATA = [];
+const state = { search: "", sort: "name-asc", filters: {} };
+
+/* ===== CSV PARSER ===== */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cell = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], next = text[i+1];
+    if (inQuotes) {
+      if (ch === '"' && next === '"') { cell += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { cell += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { row.push(cell); cell = ""; }
+      else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ""; }
+      else if (ch === '\r') { /* skip */ }
+      else { cell += ch; }
+    }
+  }
+  if (cell !== "" || row.length > 0) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ""));
+}
+
+function rowsToData(rows) {
+  if (rows.length < 2) return [];
+  const headers = rows[0].map(h => h.trim());
+  return rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => {
+      const raw = (row[i] ?? "").trim();
+      if (h === "year" || h === "revision") obj[h] = parseInt(raw, 10);
+      else if (h === "korean" || h === "official") obj[h] = /^(true|y|yes|1)$/i.test(raw);
+      else if (h === "colors") obj[h] = raw.split("|").map(c => c.trim()).filter(Boolean);
+      else obj[h] = raw;
+    });
+    return obj;
+  }).filter(d => d.name);
+}
+
+/* ===== DATA LOAD ===== */
+async function loadData() {
+  const placeholder = "PASTE_YOUR_GOOGLE_SHEETS_CSV_URL_HERE";
+  if (!SHEET_CSV_URL || SHEET_CSV_URL === placeholder) {
+    console.warn("[Demo Mode] Google Sheets URL 미설정 — 샘플 데이터 사용");
+    DATA = FALLBACK_DATA;
+    document.getElementById('headerMeta').innerHTML =
+      '<span class="live-dot" style="background:#999"></span>DEMO · <strong>' + DATA.length + '</strong> Systems';
+    init();
+    return;
+  }
+  try {
+    const res = await fetch(SHEET_CSV_URL);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    DATA = rowsToData(rows);
+    if (DATA.length === 0) throw new Error("데이터가 비어있습니다");
+    init();
+  } catch (err) {
+    console.error("[Sheet Load Error]", err);
+    showError(err.message);
+  }
+}
+
+function showError(msg) {
+  document.getElementById('results').innerHTML = `
+    <div class="error-state">
+      <h2>데이터를 불러올 수 없습니다</h2>
+      <p>구글 시트가 "웹에 게시"되어 있고 CSV 형식으로 게시되었는지 확인해주세요.</p>
+      <div class="error-detail">
+        <strong>오류:</strong> ${escapeHtml(msg)}<br>
+        <strong>URL:</strong> ${escapeHtml(SHEET_CSV_URL)}
+      </div>
+    </div>
+  `;
+}
+
+/* ===== FILTER UI ===== */
+function uniqueValues(key) {
+  return [...new Set(DATA.map(d => d[key]))]
+    .filter(v => v !== undefined && v !== "")
+    .sort((a,b) => String(a).localeCompare(String(b),'ko'));
+}
+
+function buildFilters() {
+  const root = document.getElementById('filters');
+  root.innerHTML = "";
+  SCHEMA.forEach(field => {
+    const grp = document.createElement('div');
+    grp.className = 'filter-group';
+    const h = document.createElement('h3');
+    h.textContent = field.label;
+    grp.appendChild(h);
+
+    if (field.type === 'chips') {
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      const values = field.values
+        ? field.values
+        : uniqueValues(field.key).map(v => ({ v, label: String(v) }));
+      values.forEach(({v, label}) => {
+        const b = document.createElement('button');
+        b.className = 'chip';
+        b.textContent = label;
+        b.dataset.key = field.key;
+        b.dataset.value = String(v);
+        b.addEventListener('click', () => toggleChip(field.key, v, b));
+        chips.appendChild(b);
+      });
+      grp.appendChild(chips);
+    } else if (field.type === 'range') {
+      const all = DATA.map(d => d[field.key]).filter(n => !isNaN(n));
+      if (all.length === 0) return;
+      const min = Math.min(...all), max = Math.max(...all);
+      const row = document.createElement('div');
+      row.className = 'range-row';
+      row.innerHTML = `
+        <input type="number" min="${min}" max="${max}" placeholder="${min}" data-range="${field.key}-min">
+        <span>—</span>
+        <input type="number" min="${min}" max="${max}" placeholder="${max}" data-range="${field.key}-max">
+      `;
+      grp.appendChild(row);
+      row.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const minV = +row.querySelector(`[data-range="${field.key}-min"]`).value || null;
+          const maxV = +row.querySelector(`[data-range="${field.key}-max"]`).value || null;
+          if (minV === null && maxV === null) delete state.filters[field.key];
+          else state.filters[field.key] = { min: minV ?? min, max: maxV ?? max };
+          render();
+        });
+      });
+    }
+    root.appendChild(grp);
+  });
+}
+
+function toggleChip(key, value, btn) {
+  if (!state.filters[key]) state.filters[key] = new Set();
+  const set = state.filters[key];
+  const exists = [...set].some(v => String(v) === String(value));
+  if (exists) {
+    [...set].forEach(v => { if (String(v) === String(value)) set.delete(v); });
+    btn.classList.remove('active');
+  } else {
+    set.add(value);
+    btn.classList.add('active');
+  }
+  if (set.size === 0) delete state.filters[key];
+  render();
+}
+
+/* ===== FILTER + SORT ===== */
+function applyFilters() {
+  const q = state.search.trim().toLowerCase();
+  return DATA.filter(d => {
+    if (q && !d.name.toLowerCase().includes(q)) return false;
+    for (const [key, val] of Object.entries(state.filters)) {
+      if (val instanceof Set) {
+        if (![...val].some(v => String(v) === String(d[key]))) return false;
+      } else if (val && typeof val === 'object') {
+        if (d[key] < val.min || d[key] > val.max) return false;
+      }
+    }
+    return true;
+  });
+}
+
+function applySort(items) {
+  const sorted = [...items];
+  switch (state.sort) {
+    case 'name-asc': sorted.sort((a,b) => a.name.localeCompare(b.name,'ko')); break;
+    case 'year-desc': sorted.sort((a,b) => b.year - a.year); break;
+    case 'year-asc': sorted.sort((a,b) => a.year - b.year); break;
+    case 'rev-desc': sorted.sort((a,b) => b.revision - a.revision); break;
+  }
+  return sorted;
+}
+
+/* ===== RENDER ===== */
+function render() {
+  const filtered = applyFilters();
+  const sorted = applySort(filtered);
+  const root = document.getElementById('results');
+  document.getElementById('visibleCount').textContent = String(sorted.length).padStart(2, '0');
+  renderActiveFilters();
+  if (sorted.length === 0) {
+    root.innerHTML = `
+      <div class="empty">
+        <h2>조건에 맞는 디자인 시스템이 없습니다</h2>
+        <p>필터를 조정하거나 초기화 후 다시 시도해 보세요.</p>
+        <button class="empty-action" onclick="resetAll()">필터 초기화</button>
+      </div>`;
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  sorted.forEach(d => grid.appendChild(card(d)));
+  root.innerHTML = "";
+  root.appendChild(grid);
+}
+
+function card(d) {
+  const el = document.createElement('article');
+  el.className = 'card';
+  el.tabIndex = 0;
+  const colors = (d.colors && d.colors.length) ? d.colors : ['#ddd','#ccc','#bbb','#aaa'];
+  el.innerHTML = `
+    <div class="card-swatch" data-style="${escapeHtml(d.style || '')}">
+      ${colors.map(c => `<span style="background:${escapeHtml(c)}"></span>`).join('')}
+    </div>
+    <div class="card-body">
+      <div class="card-head">
+        <div class="card-name">${escapeHtml(d.name)}</div>
+        <div class="card-year">${d.year || ''}</div>
+      </div>
+      <div class="card-meta">${escapeHtml(d.region || '')} · ${escapeHtml(d.industry || '')}${d.revision ? ' · Rev. ' + d.revision : ''}</div>
+      <div class="card-tags">
+        ${d.tone ? `<span class="card-tag">${escapeHtml(d.tone)}</span>` : ''}
+        ${d.density ? `<span class="card-tag">${escapeHtml(d.density)}</span>` : ''}
+        ${d.corners ? `<span class="card-tag">${escapeHtml(d.corners)}</span>` : ''}
+        ${d.korean ? '<span class="card-tag accent">한글</span>' : ''}
+        ${d.official ? '<span class="card-tag">공식</span>' : ''}
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+function renderActiveFilters() {
+  const root = document.getElementById('activeFilters');
+  root.innerHTML = "";
+  Object.entries(state.filters).forEach(([key, val]) => {
+    const field = SCHEMA.find(f => f.key === key);
+    const label = field?.label || key;
+    if (val instanceof Set) {
+      val.forEach(v => {
+        const display = field?.values?.find(x => String(x.v) === String(v))?.label ?? String(v);
+        const chip = document.createElement('span');
+        chip.className = 'active-filter';
+        chip.innerHTML = `${label}: ${display} <button aria-label="제거">×</button>`;
+        chip.querySelector('button').addEventListener('click', () => {
+          const btn = document.querySelector(`.chip[data-key="${key}"][data-value="${String(v).replace(/"/g,'\\"')}"]`);
+          if (btn) toggleChip(key, v, btn);
+        });
+        root.appendChild(chip);
+      });
+    } else {
+      const chip = document.createElement('span');
+      chip.className = 'active-filter';
+      chip.innerHTML = `${label}: ${val.min}–${val.max} <button aria-label="제거">×</button>`;
+      chip.querySelector('button').addEventListener('click', () => {
+        delete state.filters[key];
+        document.querySelectorAll(`[data-range^="${key}-"]`).forEach(i => i.value = '');
+        render();
+      });
+      root.appendChild(chip);
+    }
+  });
+}
+
+function resetAll() {
+  state.search = ""; state.sort = "name-asc"; state.filters = {};
+  document.getElementById('search').value = "";
+  document.getElementById('sort').value = "name-asc";
+  document.querySelectorAll('.chip.active').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('input[data-range]').forEach(i => i.value = "");
+  render();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function bindEvents() {
+  document.getElementById('search').addEventListener('input', e => { state.search = e.target.value; render(); });
+  document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+  document.getElementById('resetBtn').addEventListener('click', resetAll);
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  document.getElementById('mobileToggle').addEventListener('click', () => { sb.classList.add('open'); ov.classList.add('show'); });
+  ov.addEventListener('click', () => { sb.classList.remove('open'); ov.classList.remove('show'); });
+}
+
+function init() {
+  document.getElementById('totalCount').textContent = DATA.length;
+  buildFilters();
+  bindEvents();
+  render();
+}
+
+loadData();
+</script>
+
+</body>
+</html>
