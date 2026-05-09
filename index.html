@@ -28,9 +28,9 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
-  .skip { position: absolute; left: -9999px; }
-  .skip:focus { left: 16px; top: 16px; background: var(--ink); color: var(--bg); padding: 8px 12px; z-index: 100; }
+  a { color: inherit; }
 
+  /* ===== Header ===== */
   .site-header { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
   .header-inner { max-width: 1440px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
   .brand { font-family: var(--serif); font-weight: 500; font-size: 22px; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); font-style: italic; }
@@ -40,8 +40,8 @@
   .live-dot { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 6px; animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .layout { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: calc(100vh - 60px); }
-
+  /* ===== Gallery Layout ===== */
+  .layout { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
   .sidebar { border-right: 1px solid var(--line); padding: 28px 28px 60px; position: sticky; top: 61px; align-self: start; height: calc(100vh - 61px); overflow-y: auto; background: var(--bg); }
   .sidebar::-webkit-scrollbar { width: 6px; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 3px; }
@@ -49,7 +49,6 @@
   .sidebar-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
   .reset-btn { background: none; border: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
   .reset-btn:hover { color: var(--accent); }
-
   .filter-group { margin-bottom: 22px; }
   .filter-group h3 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: var(--ink-soft); font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .filter-group h3::before { content: ''; width: 6px; height: 6px; background: var(--ink); display: inline-block; }
@@ -82,7 +81,7 @@
   .active-filter button:hover { opacity: 1; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
-  .card { background: var(--bg-elev); cursor: pointer; transition: transform 0.2s ease; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .card { background: var(--bg-elev); cursor: pointer; transition: transform 0.2s ease; display: flex; flex-direction: column; overflow: hidden; position: relative; text-decoration: none; color: inherit; }
   .card:hover { z-index: 2; }
   .card:hover .card-swatch { transform: scale(1.02); }
   .card-swatch { aspect-ratio: 16/10; display: grid; grid-template-columns: repeat(4, 1fr); transition: transform 0.4s ease; position: relative; }
@@ -93,17 +92,88 @@
   .card-name { font-family: var(--serif); font-size: 19px; font-weight: 500; letter-spacing: -0.015em; color: var(--ink); line-height: 1.2; }
   .card-year { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); flex-shrink: 0; }
   .card-meta { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.4; }
+  .card-tagline { font-size: 12px; color: var(--ink-mute); line-height: 1.45; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
   .card-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); background: var(--bg-soft); padding: 3px 7px; border-radius: 2px; }
   .card-tag.accent { color: var(--accent); background: var(--accent-soft); }
 
+  /* ===== Detail Page ===== */
+  .detail { max-width: 1100px; margin: 0 auto; padding: 40px 32px 100px; }
+  .back-link { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; transition: color 0.15s; }
+  .back-link:hover { color: var(--accent); }
+  .detail-head { padding-bottom: 32px; border-bottom: 1px solid var(--line-soft); margin-bottom: 48px; }
+  .detail-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 12px; display: flex; gap: 14px; align-items: center; }
+  .detail-eyebrow .official-badge { background: var(--accent); color: var(--bg); padding: 2px 8px; border-radius: 2px; font-weight: 600; }
+  .detail-name { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(40px, 6vw, 64px); letter-spacing: -0.025em; line-height: 1.05; margin: 0 0 16px; }
+  .detail-tagline { font-family: var(--serif); font-size: clamp(18px, 2vw, 22px); font-weight: 400; line-height: 1.4; color: var(--ink-soft); margin: 0 0 24px; max-width: 720px; }
+  .detail-meta-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-bottom: 24px; }
+  .detail-meta-item { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; color: var(--ink-mute); }
+  .detail-meta-item strong { color: var(--ink); font-weight: 500; }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+  .detail-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--line-soft); background: var(--bg-elev); border-radius: 999px; color: var(--ink-soft); }
+  .detail-tag.accent { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .official-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--ink); color: var(--bg); text-decoration: none; border-radius: var(--radius); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
+  .official-link:hover { background: var(--accent); }
+
+  /* Sections */
+  .section { margin-bottom: 64px; }
+  .section-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .section-eyebrow .num { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; background: var(--ink); color: var(--bg); border-radius: 50%; font-size: 9px; font-weight: 600; }
+  .section-title { font-family: var(--serif); font-size: clamp(28px, 4vw, 36px); font-weight: 500; letter-spacing: -0.02em; margin: 0 0 24px; }
+
+  /* Brand DNA list */
+  .dna-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .dna-list li { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--line-soft); }
+  .dna-list li:last-child { border-bottom: none; }
+  .dna-list dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); padding-top: 2px; }
+  .dna-list dd { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.55; }
+
+  /* Color tokens */
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+  .color-tile { background: var(--bg-elev); border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; }
+  .color-swatch { aspect-ratio: 16/10; }
+  .color-info { padding: 10px 12px 12px; }
+  .color-name { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; color: var(--ink); margin-bottom: 2px; font-weight: 500; }
+  .color-hex { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); text-transform: uppercase; }
+
+  /* Typography */
+  .type-grid { display: grid; gap: 24px; }
+  .type-card { background: var(--bg-elev); border: 1px solid var(--line-soft); padding: 24px; border-radius: var(--radius); }
+  .type-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 8px; }
+  .type-stack { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; word-break: break-all; }
+  .type-sample { font-size: 36px; line-height: 1.2; letter-spacing: -0.015em; color: var(--ink); }
+
+  /* Radius tokens */
+  .radius-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+  .radius-tile { background: var(--bg-elev); border: 1px solid var(--line-soft); padding: 20px; border-radius: var(--radius); text-align: center; }
+  .radius-demo { width: 80px; height: 80px; background: var(--bg-soft); border: 1px solid var(--ink); margin: 0 auto 12px; }
+  .radius-name { font-family: var(--mono); font-size: 11px; color: var(--ink); font-weight: 500; margin-bottom: 2px; }
+  .radius-value { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); }
+
+  /* Shadow tokens */
+  .shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+  .shadow-tile { background: var(--bg-elev); padding: 32px 16px 16px; border-radius: var(--radius); }
+  .shadow-demo { width: 80px; height: 80px; background: #fff; border-radius: 4px; margin: 0 auto 18px; }
+  .shadow-name { font-family: var(--mono); font-size: 11px; color: var(--ink); font-weight: 500; margin-bottom: 2px; text-align: center; }
+  .shadow-value { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); text-align: center; word-break: break-all; line-height: 1.3; }
+
+  /* Code block (md original) */
+  .code-block { background: var(--ink); color: #d8d3c5; padding: 20px 24px; border-radius: var(--radius); font-family: var(--mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-height: 360px; overflow-y: auto; }
+  .code-block::-webkit-scrollbar { width: 8px; height: 8px; }
+  .code-block::-webkit-scrollbar-thumb { background: var(--ink-mute); border-radius: 4px; }
+  .copy-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--bg-elev); border: 1px solid var(--line-soft); padding: 8px 14px; cursor: pointer; border-radius: var(--radius); margin-bottom: 12px; transition: all 0.15s; }
+  .copy-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .copy-btn.copied { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .empty-section { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; color: var(--ink-mute); padding: 24px; background: var(--bg-soft); border-radius: var(--radius); text-align: center; font-style: italic; }
+
+  /* ===== Empty / Error / Loading ===== */
   .empty, .error-state { text-align: center; padding: 60px 20px; }
   .empty h2, .error-state h2 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 28px; color: var(--ink); margin: 0 0 12px; letter-spacing: -0.02em; }
   .empty p, .error-state p { margin: 0 0 20px; font-size: 14px; max-width: 500px; margin-left: auto; margin-right: auto; color: var(--ink-soft); }
   .empty-action { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); border: none; padding: 12px 20px; cursor: pointer; border-radius: var(--radius); }
   .error-state { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); }
   .error-detail { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); background: var(--bg-elev); padding: 12px 16px; border-radius: var(--radius); margin-top: 16px; text-align: left; word-break: break-all; }
-
   .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; gap: 16px; }
   .spinner { width: 28px; height: 28px; border: 2px solid var(--line-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -125,12 +195,12 @@
     .toolbar { gap: 10px; }
     .search-wrap { min-width: 100%; order: 2; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .detail { padding: 24px 18px 80px; }
+    .dna-list li { grid-template-columns: 1fr; gap: 6px; }
   }
 </style>
 </head>
 <body>
-
-<a class="skip" href="#main">본문으로 건너뛰기</a>
 
 <header class="site-header">
   <div class="header-inner">
@@ -142,68 +212,19 @@
   </div>
 </header>
 
-<div class="layout">
-  <div class="sidebar-overlay" id="overlay"></div>
-
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-head">
-      <span class="sidebar-title">Filters</span>
-      <button class="reset-btn" id="resetBtn">필터 초기화</button>
-    </div>
-    <div id="filters"></div>
-  </aside>
-
-  <main class="main" id="main">
-    <div class="toolbar">
-      <div class="search-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input class="search" id="search" type="search" placeholder="브랜드명으로 검색…" aria-label="검색">
-      </div>
-      <div class="sort-wrap">
-        <span class="sort-label">Sort</span>
-        <select class="sort" id="sort" aria-label="정렬">
-          <option value="name-asc">브랜드명 (가나다)</option>
-          <option value="year-desc">출시 연도 ↓</option>
-          <option value="year-asc">출시 연도 ↑</option>
-          <option value="rev-desc">최근 리비전 ↓</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="results-bar">
-      <div class="results-count">
-        <em id="visibleCount">—</em> <span style="color:var(--ink-mute); font-size:14px; font-family:var(--mono); letter-spacing:0.08em; text-transform:uppercase;">results</span>
-      </div>
-      <div class="active-filters" id="activeFilters"></div>
-    </div>
-
-    <div id="results">
-      <div class="loading"><div class="spinner"></div><span>구글 시트에서 데이터 로딩 중…</span></div>
-    </div>
-  </main>
+<div id="app">
+  <div class="loading"><div class="spinner"></div><span>구글 시트에서 데이터 로딩 중…</span></div>
 </div>
 
 <script>
 /* ============================================================
-   ★★★ 설정: 여기에 본인의 Google Sheets CSV URL 을 입력하세요 ★★★
-
-   사용 방법:
-   1. Google Sheets 에서 [파일] → [공유] → [웹에 게시] 클릭
-   2. "전체 문서" → "쉼표로 구분된 값(.csv)" 선택
-   3. [게시] 버튼 클릭 → 생성된 URL 복사
-   4. 아래 SHEET_CSV_URL 변수에 붙여넣기
-
-   예시:
-   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vXXXX.../pub?output=csv";
+   ★★★ 본인의 Google Sheets CSV URL 을 입력하세요 ★★★
    ============================================================ */
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7zU3F1beW0gD5nybKdoxUfN4cgbAP-yFmJNWY2m8Gwm36_Jpcs9K_qbNb_uZ-uCEAZQA5K8UAkv3M/pub?output=csv";
 
-/* 시트 연결 전 데모 모드: 위 URL이 기본값이면 샘플 데이터 사용 */
 const FALLBACK_DATA = [
-  { name:"Material Design", year:2014, revision:2024, region:"Global", industry:"Tech", tone:"Bright", style:"Geometric", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Subtle Depth", theme:"Both", official:true, colors:["#1976d2","#42a5f5","#ffc107","#f50057"] },
-  { name:"Apple HIG", year:2013, revision:2024, region:"Global", industry:"Tech", tone:"Neutral", style:"Refined", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#007aff","#34c759","#ff3b30","#000000"] },
-  { name:"Toss DS", year:2020, revision:2024, region:"Asia", industry:"Finance", tone:"Cool", style:"Refined", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#3182f6","#191f28","#f2f4f6","#ff5b5b"] },
-  { name:"Naver Design", year:2018, revision:2023, region:"Asia", industry:"Tech", tone:"Bright", style:"Geometric", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#03c75a","#000000","#f7f7f7","#ff7700"] }
+  { name:"Apple HIG", year:2013, revision:2024, region:"Global", industry:"Tech", tone:"Neutral", style:"Refined", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#007aff","#34c759","#ff3b30","#000000"], tagline:"투명한 재료감과 또렷한 위계 — 기기를 잊게 만드는 무대 인터페이스", philosophy:"Clarity Deference Depth — 콘텐츠가 주인공이며 UI는 무대 뒤로 물러난다", link:"https://developer.apple.com/design/human-interface-guidelines", font_display:"SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif", font_body:"SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif", color_primary:"#007aff", color_neutral:"#1d1d1f", color_accent:"#ff3b30", radius_tokens:"none:0|sm:6|md:10|lg:14|xl:20|full:9999", shadow_tokens:"sm:0 1px 3px rgba(0 0 0 / 0.06)|md:0 4px 14px rgba(0 0 0 / 0.10)|lg:0 10px 30px rgba(0 0 0 / 0.12)|xl:0 20px 50px rgba(0 0 0 / 0.16)", spacing_base:"4" },
+  { name:"Naver Design", year:2018, revision:2023, region:"Asia", industry:"Tech", tone:"Bright", style:"Geometric", font:"Sans", korean:true, density:"Comfortable", corners:"Rounded", flatness:"Flat", theme:"Both", official:true, colors:["#03c75a","#000000","#f7f7f7","#ff7700"], tagline:"초록의 결단과 검정의 절제 — 한국 디지털 인프라의 기본값", philosophy:"연결을 잘 만드는 디자인 — 거대한 사용자 베이스를 위한 보편성과 신뢰", link:"https://campaign.naver.com/brandeum", font_display:"Noto Sans KR, Pretendard, sans-serif", font_body:"Noto Sans KR, Pretendard, sans-serif", color_primary:"#03c75a", color_neutral:"#191919", color_accent:"#ff7700", radius_tokens:"none:0|sm:4|md:8|lg:12|xl:16|full:9999", shadow_tokens:"sm:0 1px 2px rgba(0 0 0 / 0.05)|md:0 4px 12px rgba(0 0 0 / 0.08)|lg:0 8px 24px rgba(0 0 0 / 0.12)|xl:0 16px 32px rgba(0 0 0 / 0.16)", spacing_base:"4" }
 ];
 
 const SCHEMA = [
@@ -263,45 +284,130 @@ function rowsToData(rows) {
   }).filter(d => d.name);
 }
 
+/* ===== Slug for URL ===== */
+function slugify(s) {
+  return String(s).toLowerCase()
+    .replace(/[^\w\s가-힣ㄱ-ㅎㅏ-ㅣ-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 /* ===== DATA LOAD ===== */
 async function loadData() {
   const placeholder = "PASTE_YOUR_GOOGLE_SHEETS_CSV_URL_HERE";
   if (!SHEET_CSV_URL || SHEET_CSV_URL === placeholder) {
-    console.warn("[Demo Mode] Google Sheets URL 미설정 — 샘플 데이터 사용");
     DATA = FALLBACK_DATA;
     document.getElementById('headerMeta').innerHTML =
       '<span class="live-dot" style="background:#999"></span>DEMO · <strong>' + DATA.length + '</strong> Systems';
-    init();
+    route();
     return;
   }
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const url = SHEET_CSV_URL + (SHEET_CSV_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+    const res = await fetch(url, { redirect: 'follow', mode: 'cors' });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
+    if (text.toLowerCase().includes('<!doctype') || text.toLowerCase().includes('<html')) {
+      throw new Error("CSV가 아닌 HTML이 반환되었습니다 — 게시 형식을 CSV로 변경하세요");
+    }
     const rows = parseCSV(text);
     DATA = rowsToData(rows);
     if (DATA.length === 0) throw new Error("데이터가 비어있습니다");
-    init();
+    document.getElementById('totalCount').textContent = DATA.length;
+    route();
   } catch (err) {
     console.error("[Sheet Load Error]", err);
-    showError(err.message);
+    DATA = FALLBACK_DATA;
+    document.getElementById('headerMeta').innerHTML =
+      '<span class="live-dot" style="background:#c62828"></span>ERROR · <strong>' + DATA.length + '</strong> Demo';
+    route();
+    showErrorBanner(err.message);
   }
 }
 
-function showError(msg) {
-  document.getElementById('results').innerHTML = `
-    <div class="error-state">
-      <h2>데이터를 불러올 수 없습니다</h2>
-      <p>구글 시트가 "웹에 게시"되어 있고 CSV 형식으로 게시되었는지 확인해주세요.</p>
-      <div class="error-detail">
-        <strong>오류:</strong> ${escapeHtml(msg)}<br>
-        <strong>URL:</strong> ${escapeHtml(SHEET_CSV_URL)}
-      </div>
+function showErrorBanner(msg) {
+  const app = document.getElementById('app');
+  const banner = document.createElement('div');
+  banner.className = 'error-state';
+  banner.style.margin = '24px 32px 0';
+  banner.innerHTML = `
+    <h2>데이터를 불러올 수 없습니다</h2>
+    <p>샘플 데이터로 화면을 표시 중입니다. 시트 게시 설정을 확인해 주세요.</p>
+    <div class="error-detail">
+      <strong>오류:</strong> ${escapeHtml(msg)}<br>
+      <strong>URL:</strong> ${escapeHtml(SHEET_CSV_URL)}
     </div>
   `;
+  app.insertBefore(banner, app.firstChild);
 }
 
-/* ===== FILTER UI ===== */
+/* ============================================================
+   ROUTER
+   ============================================================ */
+function route() {
+  const hash = location.hash.slice(1) || '/';
+  if (hash === '/' || hash === '') {
+    renderGallery();
+  } else {
+    const slug = hash.replace(/^\//, '');
+    const item = DATA.find(d => slugify(d.name) === slug);
+    if (item) renderDetail(item);
+    else renderGallery();
+  }
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('hashchange', route);
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+function renderGallery() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="layout">
+      <div class="sidebar-overlay" id="overlay"></div>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+          <span class="sidebar-title">Filters</span>
+          <button class="reset-btn" id="resetBtn">필터 초기화</button>
+        </div>
+        <div id="filters"></div>
+      </aside>
+      <main class="main">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input class="search" id="search" type="search" placeholder="브랜드명으로 검색…" aria-label="검색">
+          </div>
+          <div class="sort-wrap">
+            <span class="sort-label">Sort</span>
+            <select class="sort" id="sort" aria-label="정렬">
+              <option value="name-asc">브랜드명 (가나다)</option>
+              <option value="year-desc">출시 연도 ↓</option>
+              <option value="year-asc">출시 연도 ↑</option>
+              <option value="rev-desc">최근 리비전 ↓</option>
+            </select>
+          </div>
+        </div>
+        <div class="results-bar">
+          <div class="results-count">
+            <em id="visibleCount">—</em> <span style="color:var(--ink-mute); font-size:14px; font-family:var(--mono); letter-spacing:0.08em; text-transform:uppercase;">results</span>
+          </div>
+          <div class="active-filters" id="activeFilters"></div>
+        </div>
+        <div id="results"></div>
+      </main>
+    </div>
+  `;
+
+  document.getElementById('totalCount').textContent = DATA.length;
+  buildFilters();
+  bindGalleryEvents();
+  renderResults();
+}
+
 function uniqueValues(key) {
   return [...new Set(DATA.map(d => d[key]))]
     .filter(v => v !== undefined && v !== "")
@@ -330,6 +436,7 @@ function buildFilters() {
         b.textContent = label;
         b.dataset.key = field.key;
         b.dataset.value = String(v);
+        if (state.filters[field.key] && [...state.filters[field.key]].some(x => String(x) === String(v))) b.classList.add('active');
         b.addEventListener('click', () => toggleChip(field.key, v, b));
         chips.appendChild(b);
       });
@@ -352,7 +459,7 @@ function buildFilters() {
           const maxV = +row.querySelector(`[data-range="${field.key}-max"]`).value || null;
           if (minV === null && maxV === null) delete state.filters[field.key];
           else state.filters[field.key] = { min: minV ?? min, max: maxV ?? max };
-          render();
+          renderResults();
         });
       });
     }
@@ -372,10 +479,9 @@ function toggleChip(key, value, btn) {
     btn.classList.add('active');
   }
   if (set.size === 0) delete state.filters[key];
-  render();
+  renderResults();
 }
 
-/* ===== FILTER + SORT ===== */
 function applyFilters() {
   const q = state.search.trim().toLowerCase();
   return DATA.filter(d => {
@@ -402,8 +508,7 @@ function applySort(items) {
   return sorted;
 }
 
-/* ===== RENDER ===== */
-function render() {
+function renderResults() {
   const filtered = applyFilters();
   const sorted = applySort(filtered);
   const root = document.getElementById('results');
@@ -426,13 +531,13 @@ function render() {
 }
 
 function card(d) {
-  const el = document.createElement('article');
+  const el = document.createElement('a');
   el.className = 'card';
-  el.tabIndex = 0;
+  el.href = '#/' + slugify(d.name);
   const colors = (d.colors && d.colors.length) ? d.colors : ['#ddd','#ccc','#bbb','#aaa'];
   el.innerHTML = `
     <div class="card-swatch" data-style="${escapeHtml(d.style || '')}">
-      ${colors.map(c => `<span style="background:${escapeHtml(c)}"></span>`).join('')}
+      ${colors.slice(0,4).map(c => `<span style="background:${escapeHtml(c)}"></span>`).join('')}
     </div>
     <div class="card-body">
       <div class="card-head">
@@ -440,6 +545,7 @@ function card(d) {
         <div class="card-year">${d.year || ''}</div>
       </div>
       <div class="card-meta">${escapeHtml(d.region || '')} · ${escapeHtml(d.industry || '')}${d.revision ? ' · Rev. ' + d.revision : ''}</div>
+      ${d.tagline ? `<div class="card-tagline">${escapeHtml(d.tagline)}</div>` : ''}
       <div class="card-tags">
         ${d.tone ? `<span class="card-tag">${escapeHtml(d.tone)}</span>` : ''}
         ${d.density ? `<span class="card-tag">${escapeHtml(d.density)}</span>` : ''}
@@ -454,6 +560,7 @@ function card(d) {
 
 function renderActiveFilters() {
   const root = document.getElementById('activeFilters');
+  if (!root) return;
   root.innerHTML = "";
   Object.entries(state.filters).forEach(([key, val]) => {
     const field = SCHEMA.find(f => f.key === key);
@@ -477,7 +584,7 @@ function renderActiveFilters() {
       chip.querySelector('button').addEventListener('click', () => {
         delete state.filters[key];
         document.querySelectorAll(`[data-range^="${key}-"]`).forEach(i => i.value = '');
-        render();
+        renderResults();
       });
       root.appendChild(chip);
     }
@@ -486,20 +593,16 @@ function renderActiveFilters() {
 
 function resetAll() {
   state.search = ""; state.sort = "name-asc"; state.filters = {};
-  document.getElementById('search').value = "";
-  document.getElementById('sort').value = "name-asc";
+  const s = document.getElementById('search'); if (s) s.value = "";
+  const so = document.getElementById('sort'); if (so) so.value = "name-asc";
   document.querySelectorAll('.chip.active').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('input[data-range]').forEach(i => i.value = "");
-  render();
+  renderResults();
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function bindEvents() {
-  document.getElementById('search').addEventListener('input', e => { state.search = e.target.value; render(); });
-  document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
+function bindGalleryEvents() {
+  document.getElementById('search').addEventListener('input', e => { state.search = e.target.value; renderResults(); });
+  document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; renderResults(); });
   document.getElementById('resetBtn').addEventListener('click', resetAll);
   const sb = document.getElementById('sidebar');
   const ov = document.getElementById('overlay');
@@ -507,11 +610,223 @@ function bindEvents() {
   ov.addEventListener('click', () => { sb.classList.remove('open'); ov.classList.remove('show'); });
 }
 
-function init() {
-  document.getElementById('totalCount').textContent = DATA.length;
-  buildFilters();
-  bindEvents();
-  render();
+/* ============================================================
+   DETAIL PAGE
+   ============================================================ */
+function parseTokens(str) {
+  if (!str) return [];
+  return str.split('|').map(t => {
+    const [name, ...rest] = t.split(':');
+    return { name: (name || '').trim(), value: rest.join(':').trim() };
+  }).filter(t => t.name);
+}
+
+function renderDetail(d) {
+  const app = document.getElementById('app');
+  const radiusTokens = parseTokens(d.radius_tokens);
+  const shadowTokens = parseTokens(d.shadow_tokens);
+  const colors = d.colors || [];
+
+  const mdSnippet = generateMdSnippet(d);
+
+  app.innerHTML = `
+    <article class="detail">
+      <a href="#/" class="back-link">← 목록으로</a>
+
+      <header class="detail-head">
+        <div class="detail-eyebrow">
+          ${d.official ? '<span class="official-badge">공식</span>' : '<span>비공식</span>'}
+          <span>출시 ${d.year || '—'}</span>
+          <span>리비전 ${d.revision || '—'}</span>
+        </div>
+        <h1 class="detail-name">${escapeHtml(d.name)}</h1>
+        ${d.tagline ? `<p class="detail-tagline">${escapeHtml(d.tagline)}</p>` : ''}
+
+        <div class="detail-tags">
+          ${d.region ? `<span class="detail-tag">${escapeHtml(d.region)}</span>` : ''}
+          ${d.industry ? `<span class="detail-tag">${escapeHtml(d.industry)}</span>` : ''}
+          ${d.tone ? `<span class="detail-tag">${escapeHtml(d.tone)}</span>` : ''}
+          ${d.style ? `<span class="detail-tag">${escapeHtml(d.style)}</span>` : ''}
+          ${d.font ? `<span class="detail-tag">${escapeHtml(d.font)}</span>` : ''}
+          ${d.density ? `<span class="detail-tag">${escapeHtml(d.density)}</span>` : ''}
+          ${d.corners ? `<span class="detail-tag">${escapeHtml(d.corners)}</span>` : ''}
+          ${d.flatness ? `<span class="detail-tag">${escapeHtml(d.flatness)}</span>` : ''}
+          ${d.theme ? `<span class="detail-tag">${escapeHtml(d.theme)}</span>` : ''}
+          ${d.korean ? `<span class="detail-tag accent">한글 지원</span>` : ''}
+        </div>
+
+        ${d.link ? `<a href="${escapeHtml(d.link)}" target="_blank" rel="noopener" class="official-link">공식 사이트 →</a>` : ''}
+      </header>
+
+      <!-- 섹션 ① 브랜드 DNA -->
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">1</span>섹션</div>
+        <h2 class="section-title">브랜드 DNA</h2>
+        <ul class="dna-list">
+          <li><dt>브랜드명</dt><dd>${escapeHtml(d.name)}</dd></li>
+          ${d.tagline ? `<li><dt>한 줄 정체성</dt><dd>${escapeHtml(d.tagline)}</dd></li>` : ''}
+          ${d.philosophy ? `<li><dt>공식 철학</dt><dd>${escapeHtml(d.philosophy)}</dd></li>` : ''}
+          ${d.region || d.industry ? `<li><dt>지역·산업</dt><dd>${escapeHtml(d.region || '')} · ${escapeHtml(d.industry || '')}</dd></li>` : ''}
+          <li><dt>출시·리비전</dt><dd>출시 ${d.year || '—'} · 최근 리비전 ${d.revision || '—'}</dd></li>
+        </ul>
+      </section>
+
+      <!-- 섹션 ② Color Tokens -->
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">2</span>섹션</div>
+        <h2 class="section-title">Color Tokens</h2>
+        ${colors.length === 0 ? '<div class="empty-section">컬러 데이터가 없습니다</div>' : `
+        <div class="color-grid">
+          ${d.color_primary ? colorTile('Primary', d.color_primary) : ''}
+          ${d.color_neutral ? colorTile('Neutral', d.color_neutral) : ''}
+          ${d.color_accent ? colorTile('Accent', d.color_accent) : ''}
+          ${colors.map((c, i) => colorTile(`Palette ${String(i+1).padStart(2,'0')}`, c)).join('')}
+        </div>`}
+      </section>
+
+      <!-- 섹션 ③ Typography -->
+      ${(d.font_display || d.font_body) ? `
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">3</span>섹션</div>
+        <h2 class="section-title">Typography</h2>
+        <div class="type-grid">
+          ${d.font_display ? `
+          <div class="type-card">
+            <div class="type-label">Display</div>
+            <div class="type-stack">${escapeHtml(d.font_display)}</div>
+            <div class="type-sample" style="font-family: ${escapeAttr(d.font_display)};">한 차원 더 명료하게.</div>
+          </div>` : ''}
+          ${d.font_body ? `
+          <div class="type-card">
+            <div class="type-label">Body</div>
+            <div class="type-stack">${escapeHtml(d.font_body)}</div>
+            <div class="type-sample" style="font-family: ${escapeAttr(d.font_body)}; font-size: 18px;">콘텐츠가 인터페이스를 이끕니다. The quick brown fox jumps over the lazy dog.</div>
+          </div>` : ''}
+        </div>
+      </section>` : ''}
+
+      <!-- 섹션 ④ Border Radius -->
+      ${radiusTokens.length > 0 ? `
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">4</span>섹션</div>
+        <h2 class="section-title">Border Radius</h2>
+        <div class="radius-grid">
+          ${radiusTokens.map(t => `
+            <div class="radius-tile">
+              <div class="radius-demo" style="border-radius: ${escapeAttr(t.value)}px"></div>
+              <div class="radius-name">--radius-${escapeHtml(t.name)}</div>
+              <div class="radius-value">${escapeHtml(t.value)}px</div>
+            </div>
+          `).join('')}
+        </div>
+      </section>` : ''}
+
+      <!-- 섹션 ⑤ Shadow / Elevation -->
+      ${shadowTokens.length > 0 ? `
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">5</span>섹션</div>
+        <h2 class="section-title">Shadow / Elevation</h2>
+        <div class="shadow-grid">
+          ${shadowTokens.map(t => `
+            <div class="shadow-tile">
+              <div class="shadow-demo" style="box-shadow: ${escapeAttr(t.value)}"></div>
+              <div class="shadow-name">--shadow-${escapeHtml(t.name)}</div>
+              <div class="shadow-value">${escapeHtml(t.value)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </section>` : ''}
+
+      <!-- 섹션 ⑥ md 원본 (LLM 프롬프트용) -->
+      <section class="section">
+        <div class="section-eyebrow"><span class="num">6</span>섹션</div>
+        <h2 class="section-title">md 원본 (LLM 프롬프트용)</h2>
+        <button class="copy-btn" id="copyMd">📋 복사</button>
+        <pre class="code-block" id="mdSnippet">${escapeHtml(mdSnippet)}</pre>
+      </section>
+
+    </article>
+  `;
+
+  const copyBtn = document.getElementById('copyMd');
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(mdSnippet).then(() => {
+      copyBtn.textContent = '✓ 복사됨';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = '📋 복사'; copyBtn.classList.remove('copied'); }, 1800);
+    });
+  });
+}
+
+function colorTile(name, hex) {
+  return `
+    <div class="color-tile">
+      <div class="color-swatch" style="background:${escapeAttr(hex)}"></div>
+      <div class="color-info">
+        <div class="color-name">${escapeHtml(name)}</div>
+        <div class="color-hex">${escapeHtml(hex)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function generateMdSnippet(d) {
+  const lines = [];
+  lines.push(`# ${d.name}`);
+  if (d.tagline) lines.push(`> ${d.tagline}`);
+  lines.push('');
+  if (d.philosophy) {
+    lines.push('## 공식 철학');
+    lines.push(d.philosophy);
+    lines.push('');
+  }
+  lines.push('## 분류');
+  lines.push(`- 지역: ${d.region || '—'}`);
+  lines.push(`- 산업: ${d.industry || '—'}`);
+  lines.push(`- 컬러 톤: ${d.tone || '—'}`);
+  lines.push(`- 비주얼 스타일: ${d.style || '—'}`);
+  lines.push(`- 한글 지원: ${d.korean ? '예' : '아니오'}`);
+  lines.push(`- 출시: ${d.year || '—'} / 리비전: ${d.revision || '—'}`);
+  lines.push('');
+  if (d.font_display || d.font_body) {
+    lines.push('## Typography');
+    if (d.font_display) lines.push(`- Display: \`${d.font_display}\``);
+    if (d.font_body) lines.push(`- Body: \`${d.font_body}\``);
+    lines.push('');
+  }
+  if (d.color_primary || d.color_neutral || d.color_accent || (d.colors && d.colors.length)) {
+    lines.push('## Color Tokens');
+    if (d.color_primary) lines.push(`- --color-primary: ${d.color_primary}`);
+    if (d.color_neutral) lines.push(`- --color-neutral: ${d.color_neutral}`);
+    if (d.color_accent) lines.push(`- --color-accent: ${d.color_accent}`);
+    (d.colors || []).forEach((c, i) => lines.push(`- --color-${String(i+1).padStart(2,'0')}: ${c}`));
+    lines.push('');
+  }
+  const radius = parseTokens(d.radius_tokens);
+  if (radius.length) {
+    lines.push('## Border Radius');
+    radius.forEach(t => lines.push(`- --radius-${t.name}: ${t.value}px`));
+    lines.push('');
+  }
+  const shadows = parseTokens(d.shadow_tokens);
+  if (shadows.length) {
+    lines.push('## Shadow / Elevation');
+    shadows.forEach(t => lines.push(`- --shadow-${t.name}: ${t.value}`));
+    lines.push('');
+  }
+  if (d.link) {
+    lines.push('## 공식 자료');
+    lines.push(`- ${d.link}`);
+  }
+  return lines.join('\n');
+}
+
+/* ===== Utils ===== */
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) {
+  return String(s ?? '').replace(/["'<>&]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 loadData();
