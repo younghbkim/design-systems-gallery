@@ -41,8 +41,9 @@
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
   /* ===== Gallery Layout ===== */
-  .layout { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
-  .sidebar { border-right: 1px solid var(--line); padding: 28px 28px 60px; position: sticky; top: 61px; align-self: start; height: calc(100vh - 61px); overflow-y: auto; background: var(--bg); }
+  .layout { max-width: 1440px; margin: 0 auto; display: flex; align-items: stretch; min-height: calc(100vh - 60px); }
+  .sidebar { flex: 0 0 280px; width: 280px; border-right: 1px solid var(--line); padding: 28px 28px 60px; position: sticky; top: 61px; align-self: flex-start; height: calc(100vh - 61px); overflow-y: auto; background: var(--bg); }
+  .main-wrap { flex: 1 1 auto; min-width: 0; }
   .sidebar::-webkit-scrollbar { width: 6px; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 3px; }
   .sidebar-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
@@ -184,8 +185,8 @@
   @media (max-width: 900px) {
     .header-inner { padding: 14px 18px; }
     .header-meta { display: none; }
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { position: fixed; top: 0; left: 0; width: 88%; max-width: 340px; height: 100vh; z-index: 100; transform: translateX(-100%); transition: transform 0.25s ease; padding-top: 60px; }
+    .layout { display: block; }
+    .sidebar { flex: none; width: auto; position: fixed; top: 0; left: 0; width: 88%; max-width: 340px; height: 100vh; z-index: 100; transform: translateX(-100%); transition: transform 0.25s ease; padding-top: 60px; }
     .sidebar.open { transform: translateX(0); }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
     .sidebar-overlay.show { display: block; }
@@ -366,8 +367,8 @@ window.addEventListener('hashchange', route);
 function renderGallery() {
   const app = document.getElementById('app');
   app.innerHTML = `
+    <div class="sidebar-overlay" id="overlay"></div>
     <div class="layout">
-      <div class="sidebar-overlay" id="overlay"></div>
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-head">
           <span class="sidebar-title">Filters</span>
@@ -375,30 +376,32 @@ function renderGallery() {
         </div>
         <div id="filters"></div>
       </aside>
-      <main class="main">
-        <div class="toolbar">
-          <div class="search-wrap">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input class="search" id="search" type="search" placeholder="브랜드명으로 검색…" aria-label="검색">
+      <div class="main-wrap">
+        <main class="main">
+          <div class="toolbar">
+            <div class="search-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input class="search" id="search" type="search" placeholder="브랜드명으로 검색…" aria-label="검색">
+            </div>
+            <div class="sort-wrap">
+              <span class="sort-label">Sort</span>
+              <select class="sort" id="sort" aria-label="정렬">
+                <option value="name-asc">브랜드명 (가나다)</option>
+                <option value="year-desc">출시 연도 ↓</option>
+                <option value="year-asc">출시 연도 ↑</option>
+                <option value="rev-desc">최근 리비전 ↓</option>
+              </select>
+            </div>
           </div>
-          <div class="sort-wrap">
-            <span class="sort-label">Sort</span>
-            <select class="sort" id="sort" aria-label="정렬">
-              <option value="name-asc">브랜드명 (가나다)</option>
-              <option value="year-desc">출시 연도 ↓</option>
-              <option value="year-asc">출시 연도 ↑</option>
-              <option value="rev-desc">최근 리비전 ↓</option>
-            </select>
+          <div class="results-bar">
+            <div class="results-count">
+              <em id="visibleCount">—</em> <span style="color:var(--ink-mute); font-size:14px; font-family:var(--mono); letter-spacing:0.08em; text-transform:uppercase;">results</span>
+            </div>
+            <div class="active-filters" id="activeFilters"></div>
           </div>
-        </div>
-        <div class="results-bar">
-          <div class="results-count">
-            <em id="visibleCount">—</em> <span style="color:var(--ink-mute); font-size:14px; font-family:var(--mono); letter-spacing:0.08em; text-transform:uppercase;">results</span>
-          </div>
-          <div class="active-filters" id="activeFilters"></div>
-        </div>
-        <div id="results"></div>
-      </main>
+          <div id="results"></div>
+        </main>
+      </div>
     </div>
   `;
 
